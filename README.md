@@ -1,257 +1,95 @@
-# n8n
+# Docker Stacks
 
-Production-ready Docker Compose stack for n8n using PostgreSQL, Redis, and Queue Mode.
+Production-ready Docker Compose stacks built from real-world usage.
 
-This stack is based on a real-world production deployment and has been adapted to follow the standards of this repository.
+This repository contains Docker Compose stacks that I personally use, test, maintain, and trust in production environments.
 
-The goal is to provide a portable, reproducible, well-documented, and maintainable deployment that can be installed on a clean Docker host without relying on environment-specific configurations.
+Every stack is built from real deployments, cleaned of environment-specific configuration, documented, and validated before publication.
 
-## Features
+The goal is not to collect Docker Compose examples.
 
-- Production-ready configuration
-- PostgreSQL database backend
-- Redis queue backend
-- Queue Mode architecture
-- Dedicated worker container
-- Persistent bind-mounted storage
-- Portable directory structure
-- Secure by default
-- Version-pinned container images
-- Repository-standard layout
+The goal is to publish Docker Compose stacks that can be deployed again with confidence.
 
-## Architecture
+## Philosophy
 
-```text
-                 +----------------------+
-                 |         n8n          |
-                 |   Main Application   |
-                 +----------+-----------+
-                            |
-          +-----------------+-----------------+
-          |                                   |
-+----------------------+         +----------------------+
-|     PostgreSQL       |         |        Redis         |
-| Persistent Database  |         |    Queue Backend     |
-+----------------------+         +----------+-----------+
-                                            |
-                                            |
-                                  +---------v----------+
-                                  |     n8n Worker     |
-                                  | Workflow Execution |
-                                  +--------------------+
-```
+This repository follows a few simple principles.
 
-## Requirements
+- Production first
+- Quality over quantity
+- Reproducible deployments
+- Security by default
+- Long-term maintainability
+- Clear documentation
 
-Before deploying this stack, ensure the following requirements are met:
+Every published stack represents infrastructure that has already proven itself in production.
 
-- Docker Engine 28 or newer
-- Docker Compose v2
-
-## Directory Structure
+## Repository Structure
 
 ```text
-n8n/
-├── docker-compose.yml
-├── .env.example
+docker-stacks/
+├── docs/
+│   └── STANDARDS.md
+├── stacks/
+│   ├── n8n/
+│   └── paperless-ngx/
+├── .editorconfig
+├── .gitattributes
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
-After the first deployment, Docker will automatically create the required persistent directories.
-
-Typical directory layout:
+Repository-wide engineering standards are documented in:
 
 ```text
-n8n/
-├── n8n/
-├── pgdata/
-└── redis/
+docs/STANDARDS.md
 ```
 
-## Quick Start
+## Available Stacks
 
-Copy the example environment file.
+| Stack | Description | Status |
+|--------|-------------|--------|
+| Paperless-ngx | Document management system using PostgreSQL and Redis | ✅ Production |
+| n8n | Workflow automation platform using PostgreSQL, Redis and Queue Mode | ✅ Production |
 
-```bash
-cp .env.example .env
-```
+More production-ready stacks will be added over time.
 
-Edit the `.env` file and replace every `change-me` value with securely generated secrets.
+## Repository Standards
 
-Validate the Docker Compose configuration.
+Every stack published in this repository:
 
-```bash
-docker compose config -q
-```
+- Is actively used in production
+- Is validated before publication
+- Includes documentation
+- Provides a `.env.example`
+- Uses pinned container image versions
+- Avoids environment-specific configuration
+- Can be deployed on a clean Docker host
+- Follows the engineering standards defined in `docs/STANDARDS.md`
 
-Start the stack.
+## Design Goals
 
-```bash
-docker compose up -d
-```
+Every stack should be:
 
-Verify that all containers are running.
+- Easy to understand
+- Easy to deploy
+- Easy to maintain
+- Easy to reproduce
 
-```bash
-docker compose ps
-```
+Configuration should be explicit.
 
-## Environment Variables
+Documentation should explain both **how** and **why**.
 
-| Variable | Required | Description |
-|-----------|:--------:|-------------|
-| `N8N_VERSION` | Yes | n8n image version |
-| `POSTGRES_VERSION` | Yes | PostgreSQL image version |
-| `REDIS_VERSION` | Yes | Redis image version |
-| `TZ` | Yes | Time zone |
-| `N8N_HOST` | Yes | Public hostname of the n8n instance |
-| `N8N_BASIC_AUTH_USER` | Yes | Basic Authentication username |
-| `N8N_BASIC_AUTH_PASSWORD` | Yes | Basic Authentication password |
-| `N8N_ENCRYPTION_KEY` | Yes | Encryption key used to protect credentials |
-| `N8N_SMTP_HOST` | No | SMTP server hostname |
-| `N8N_SMTP_PORT` | No | SMTP server port |
-| `N8N_SMTP_SSL` | No | Enable SMTP SSL |
-| `N8N_SMTP_USER` | No | SMTP username |
-| `N8N_SMTP_PASS` | No | SMTP password |
-| `N8N_SMTP_SENDER` | No | Sender email address |
-| `POSTGRES_DB` | Yes | PostgreSQL database name |
-| `POSTGRES_USER` | Yes | PostgreSQL username |
-| `POSTGRES_PASSWORD` | Yes | PostgreSQL password |
+## Contributing
 
-## Generating Secrets
+Contributions are welcome.
 
-Generate a secure Basic Authentication password.
+If you discover an issue, have an improvement, or would like to contribute to an existing stack, feel free to open an issue or submit a pull request.
 
-```bash
-openssl rand -base64 32
-```
-
-Generate an encryption key.
-
-```bash
-openssl rand -hex 32
-```
-
-Generate a secure PostgreSQL password.
-
-```bash
-openssl rand -base64 32
-```
-
-## Backup
-
-The following directories should be included in your backup strategy:
-
-- `n8n/`
-- `pgdata/`
-- `redis/`
-
-## Restore
-
-Restore the persistent directories before starting the containers.
-
-After restoring the data, start the stack.
-
-```bash
-docker compose up -d
-```
-
-## Update
-
-Pull the latest supported container images.
-
-```bash
-docker compose pull
-```
-
-Recreate the containers.
-
-```bash
-docker compose up -d
-```
-
-Verify the deployment.
-
-```bash
-docker compose ps
-```
-
-## Design Decisions
-
-This stack intentionally follows the engineering standards defined for this repository.
-
-Key design decisions include:
-
-- PostgreSQL is used instead of SQLite.
-- Redis is used for Queue Mode.
-- Workflow execution is handled by a dedicated worker.
-- Persistent data uses bind mounts.
-- Image versions are pinned instead of using `latest`.
-- No `container_name` values are defined.
-- No external Docker networks are required.
-- Environment-specific values are stored in `.env`.
-- Production defaults remain inside `docker-compose.yml`.
-
-The objective is to keep the stack portable, reproducible, and easy to maintain.
-
-## Troubleshooting
-
-Redis recommends enabling Linux memory overcommit for production systems.
-
-```bash
-sudo sysctl vm.overcommit_memory=1
-```
-
-To make the setting persistent, add the following line to `/etc/sysctl.conf`.
-
-```text
-vm.overcommit_memory = 1
-```
-
-Check container status.
-
-```bash
-docker compose ps
-```
-
-View container logs.
-
-```bash
-docker compose logs
-```
-
-View logs for the main application.
-
-```bash
-docker compose logs n8n
-```
-
-View logs for the worker.
-
-```bash
-docker compose logs worker
-```
-
-Restart the stack.
-
-```bash
-docker compose restart
-```
-
-## Tested With
-
-This stack has been validated with:
-
-- Ubuntu 24.04 LTS
-- Docker Engine 28
-- Docker Compose v2
-- n8n 2.34.0
-- PostgreSQL 16.10
-- Redis 7.4.5
+Please keep all contributions consistent with the repository standards.
 
 ## License
 
-This stack is distributed under the MIT License.
+This project is licensed under the MIT License.
 
-See the repository `LICENSE` file for details.
+See the `LICENSE` file for details.
