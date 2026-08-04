@@ -1,6 +1,6 @@
 services:
   paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+    image: ghcr.io/paperless-ngx/paperless-ngx:${PAPERLESS_VERSION}
     restart: unless-stopped
 
     depends_on:
@@ -37,7 +37,7 @@ services:
       - ./consume:/usr/src/paperless/consume
 
   db:
-    image: postgres:16-alpine
+    image: postgres:${POSTGRES_VERSION}
     restart: unless-stopped
 
     environment:
@@ -55,7 +55,7 @@ services:
       retries: 5
 
   redis:
-    image: redis:7-alpine
+    image: redis:${REDIS_VERSION}
     restart: unless-stopped
 
     command:

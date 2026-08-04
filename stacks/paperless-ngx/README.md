@@ -46,9 +46,8 @@ Before deploying this stack, ensure the following requirements are met:
 paperless-ngx/
 ├── docker-compose.yml
 ├── .env.example
-├── backup.sh
-├── restore.sh
-└── update.sh
+├── .gitignore
+└── README.md
 ```
 
 After the first deployment, Docker will automatically create the required persistent directories.
@@ -73,7 +72,13 @@ Copy the example environment file.
 cp .env.example .env
 ```
 
-Edit the `.env` file and replace every `change-me` value with a securely generated secret.
+Edit the `.env` file and replace every `change-me` value with securely generated secrets.
+
+Validate the Docker Compose configuration.
+
+```bash
+docker compose config
+```
 
 Start the stack.
 
@@ -91,22 +96,19 @@ docker compose ps
 
 | Variable | Required | Description |
 |-----------|:--------:|-------------|
-| `TZ` | Yes | Time zone used by Paperless-ngx |
+| `PAPERLESS_VERSION` | Yes | Paperless-ngx image version |
+| `POSTGRES_VERSION` | Yes | PostgreSQL image version |
+| `REDIS_VERSION` | Yes | Redis image version |
+| `TZ` | Yes | Time zone |
 | `PAPERLESS_URL` | Yes | Public URL of the Paperless instance |
 | `PAPERLESS_SECRET_KEY` | Yes | Django secret key |
+| `PAPERLESS_OCR_LANGUAGE` | Yes | Default OCR language |
+| `PAPERLESS_OCR_LANGUAGES` | Yes | Additional OCR languages |
 | `POSTGRES_DB` | Yes | PostgreSQL database name |
 | `POSTGRES_USER` | Yes | PostgreSQL username |
 | `POSTGRES_PASSWORD` | Yes | PostgreSQL password |
-| `PAPERLESS_OCR_LANGUAGE` | Yes | Default OCR language |
-| `PAPERLESS_OCR_LANGUAGES` | Yes | Additional OCR languages |
 
 ## Generating Secrets
-
-Generate a secure PostgreSQL password.
-
-```bash
-openssl rand -base64 32
-```
 
 Generate a Paperless secret key.
 
@@ -114,29 +116,40 @@ Generate a Paperless secret key.
 openssl rand -hex 64
 ```
 
+Generate a secure PostgreSQL password.
+
+```bash
+openssl rand -base64 32
+```
+
 ## Backup
 
-A backup script is included with this stack.
+Back up the following persistent directories regularly:
 
-The backup process includes:
+- `data/`
+- `media/`
+- `export/`
+- `consume/`
+- `pgdata/`
+- `redis/`
 
-- PostgreSQL database
-- Application data
-- Media files
-- Imported documents
-- Export directory
-
-Refer to `backup.sh` for implementation details.
+A repository-standard backup script will be added in a future revision.
 
 ## Restore
 
-A restore script is included with this stack.
+Restore the persistent directories before starting the stack.
 
-Refer to `restore.sh` before restoring an existing deployment.
+After restoring the data, start the services using:
+
+```bash
+docker compose up -d
+```
+
+A repository-standard restore script will be added in a future revision.
 
 ## Update
 
-Pull the latest supported container images.
+Pull the repository-supported container images.
 
 ```bash
 docker compose pull
@@ -148,7 +161,7 @@ Recreate the containers.
 docker compose up -d
 ```
 
-Verify the deployment.
+Verify that all services are running correctly.
 
 ```bash
 docker compose ps
@@ -163,7 +176,7 @@ Key design decisions include:
 - PostgreSQL is used instead of SQLite.
 - Redis provides queue management and caching.
 - Persistent data uses bind mounts.
-- Image versions are pinned instead of using `latest`.
+- Image versions are managed through `.env.example`.
 - No `container_name` values are defined.
 - No external Docker networks are required.
 - Environment-specific values are stored in `.env`.
@@ -179,13 +192,13 @@ Check container status.
 docker compose ps
 ```
 
-View container logs.
+View logs from all services.
 
 ```bash
 docker compose logs
 ```
 
-View logs for a specific service.
+View logs from Paperless-ngx only.
 
 ```bash
 docker compose logs paperless
