@@ -6,8 +6,6 @@ The goal is to build a collection of production-ready Docker Compose stacks that
 
 If a stack does not meet these standards, it does not belong in this repository.
 
----
-
 # Philosophy
 
 This repository is not a collection of Docker Compose examples.
@@ -18,11 +16,9 @@ Every stack included here is:
 - Personally maintained
 - Documented from real-world experience
 - Designed to be reproducible
-- Reviewed before publication
+- Validated before publication
 
 The repository reflects production deployments, not experiments.
-
----
 
 # Engineering Principles
 
@@ -34,15 +30,11 @@ A stack should first prove itself in production before being published.
 
 Experimental or untested deployments are not included.
 
----
-
 ## Documentation First
 
 Documentation is considered part of the project.
 
 If something cannot be installed by following the README, the documentation is incomplete.
-
----
 
 ## Reproducibility
 
@@ -57,7 +49,7 @@ docker compose up -d
 
 No undocumented manual steps should be required.
 
----
+A deployment should not depend on undocumented host configuration.
 
 ## Portability
 
@@ -65,14 +57,12 @@ Stacks must not depend on the author's environment.
 
 Avoid assumptions such as:
 
-- /opt/docker
+- `/opt/docker`
 - Custom directory layouts
 - Existing Docker networks
 - Existing reverse proxies
 
 The repository should work on any clean Docker host.
-
----
 
 ## Security by Default
 
@@ -85,25 +75,19 @@ Security always takes priority over convenience.
 
 Use environment variables instead.
 
----
-
 ## Maintainability
 
 A stack should remain understandable months or years after it was created.
 
 Prefer clarity over cleverness.
 
----
-
 # Docker Compose Standards
 
 ## Compose Specification
 
-Do not use the deprecated version field.
+Do not use the deprecated `version` field.
 
 Use the current Docker Compose Specification.
-
----
 
 ## Image Tags
 
@@ -113,7 +97,7 @@ Never use:
 image: redis:latest
 ```
 
-Prefer pinned versions.
+Always use pinned image versions.
 
 Example:
 
@@ -121,17 +105,13 @@ Example:
 image: redis:8.2.1
 ```
 
-This ensures reproducible deployments.
-
----
+Pinned image versions should only be updated after they have been tested in production.
 
 ## container_name
 
-Avoid using container_name unless there is a strong technical reason.
+Avoid using `container_name` unless there is a strong technical reason.
 
 Allow Docker Compose to manage container naming.
-
----
 
 ## Environment Variables
 
@@ -151,8 +131,6 @@ Bad:
 POSTGRES_PASSWORD: mypassword
 ```
 
----
-
 ## Volumes
 
 Prefer bind mounts whenever practical.
@@ -167,15 +145,11 @@ Example:
 
 Absolute host paths should not be used inside the repository.
 
----
-
 ## Networks
 
 Stacks should work without requiring external Docker networks.
 
 Integration with Traefik, Caddy, or Nginx Proxy Manager should be documented as an optional step.
-
----
 
 ## Restart Policy
 
@@ -186,8 +160,6 @@ restart: unless-stopped
 ```
 
 unless another policy is explicitly required.
-
----
 
 # Environment File Standards
 
@@ -219,8 +191,6 @@ The `.env.example` file and `docker-compose.yml` must always stay synchronized.
 
 A variable should never be added to `.env.example` unless it is actually used by the stack.
 
----
-
 # Secret Generation
 
 README files should explain how to generate secure secrets.
@@ -237,8 +207,6 @@ openssl rand -hex 64
 
 Do not ask users to invent passwords manually.
 
----
-
 # Documentation Standards
 
 Every stack should contain a README with at least the following sections.
@@ -254,11 +222,10 @@ Every stack should contain a README with at least the following sections.
 - Update
 - Design Decisions
 - Troubleshooting
+- Security Notes (when applicable)
 - License
 
 The README should explain both **how** and **why**.
-
----
 
 # Backup Policy
 
@@ -268,7 +235,7 @@ Stateless services usually do not require backup scripts.
 
 Stateful services should provide documented backup procedures.
 
----
+A backup is not considered complete until it has been successfully restored.
 
 # Update Policy
 
@@ -276,23 +243,32 @@ Every stack must include documented update instructions.
 
 If an update script exists, it should be documented.
 
----
+Updates should preserve user data whenever possible.
 
 # Validation
 
-Every stack must be validated before publication.
+Before publication, every stack must successfully pass:
 
-Validation means deploying the stack on a clean Ubuntu 24.04 LTS installation by following only the provided README.
+```bash
+docker compose config
+docker compose up -d
+```
+
+The Compose configuration must be valid without warnings after creating the `.env` file from `.env.example`.
+
+Every stack must then be validated by deploying it on a clean Ubuntu 24.04 LTS installation using only the provided documentation.
 
 If additional undocumented steps are required, the documentation must be updated before publication.
-
----
 
 # Stack Lifecycle
 
 Each stack should progress through the following stages.
 
 Production Deployment
+
+↓
+
+Production Validation
 
 ↓
 
@@ -304,7 +280,7 @@ Documentation
 
 ↓
 
-Validation
+Clean System Validation
 
 ↓
 
@@ -312,26 +288,23 @@ Publication
 
 The repository always reflects production-ready deployments.
 
----
-
 # Quality Checklist
 
 A stack is ready to publish only if all of the following are true.
 
 - [ ] Used in production
-- [ ] Production tested
 - [ ] README completed
 - [ ] Installation tested
-- [ ] .env.example provided
+- [ ] Clean installation tested
+- [ ] `.env.example` provided
 - [ ] Secrets removed
-- [ ] No latest image tags
+- [ ] No `latest` image tags
 - [ ] Design decisions documented
 - [ ] Backup documented
 - [ ] Restore documented
+- [ ] Restore tested
 - [ ] Update documented
-- [ ] Successfully installed on a clean Ubuntu 24.04 LTS system
-
----
+- [ ] Successfully deployed on a clean Ubuntu 24.04 LTS system
 
 # Repository Goal
 

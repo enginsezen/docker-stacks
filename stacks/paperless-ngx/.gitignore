@@ -1,0 +1,10 @@
+# Environment
+.env
+
+# Runtime data
+consume/
+data/
+export/
+media/
+pgdata/
+redis/

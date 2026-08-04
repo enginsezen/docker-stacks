@@ -1,0 +1,21 @@
+# Environment files
+.env
+**/.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
