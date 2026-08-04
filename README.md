@@ -31,7 +31,9 @@ docker-stacks/
 │   └── STANDARDS.md
 ├── stacks/
 │   ├── n8n/
-│   └── paperless-ngx/
+│   ├── paperless-ngx/
+│   ├── uptime-kuma/
+│   └── vaultwarden/
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
@@ -51,6 +53,8 @@ docs/STANDARDS.md
 |--------|-------------|--------|
 | Paperless-ngx | Document management system using PostgreSQL and Redis | ✅ Production |
 | n8n | Workflow automation platform using PostgreSQL, Redis and Queue Mode | ✅ Production |
+| Uptime Kuma | Self-hosted monitoring and status page | ✅ Production |
+| Vaultwarden | Lightweight Bitwarden-compatible password manager | ✅ Production |
 
 More production-ready stacks will be added over time.
 
