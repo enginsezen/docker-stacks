@@ -32,6 +32,7 @@ docker-stacks/
 ├── stacks/
 │   ├── n8n/
 │   ├── paperless-ngx/
+│   ├── shlink/
 │   ├── uptime-kuma/
 │   └── vaultwarden/
 ├── .editorconfig
@@ -55,6 +56,7 @@ docs/STANDARDS.md
 | n8n | Workflow automation platform using PostgreSQL, Redis and Queue Mode | ✅ Production |
 | Uptime Kuma | Self-hosted monitoring and status page | ✅ Production |
 | Vaultwarden | Lightweight Bitwarden-compatible password manager | ✅ Production |
+| Shlink | Self-hosted URL shortener with PostgreSQL and official Web Client | ✅ Production |
 
 More production-ready stacks will be added over time.
 
