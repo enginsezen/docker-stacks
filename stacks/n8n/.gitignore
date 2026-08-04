@@ -1,0 +1,7 @@
+# Environment
+.env
+
+# Runtime data
+n8n/
+pgdata/
+redis/

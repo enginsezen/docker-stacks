@@ -77,13 +77,7 @@ Copy the example environment file.
 cp .env.example .env
 ```
 
-Edit the `.env` file and replace every `change-me` value with securely generated secrets.
-
-Validate the Docker Compose configuration.
-
-```bash
-docker compose config -q
-```
+Edit the `.env` file and replace every `change-me` value with a securely generated secret.
 
 Start the stack.
 
@@ -91,7 +85,7 @@ Start the stack.
 docker compose up -d
 ```
 
-Verify that all containers are running.
+Verify that all containers are healthy.
 
 ```bash
 docker compose ps
@@ -105,7 +99,7 @@ docker compose ps
 | `POSTGRES_VERSION` | Yes | PostgreSQL image version |
 | `REDIS_VERSION` | Yes | Redis image version |
 | `TZ` | Yes | Time zone |
-| `N8N_HOST` | Yes | Public hostname of the n8n instance |
+| `N8N_HOST` | Yes | Public URL hostname |
 | `N8N_BASIC_AUTH_USER` | Yes | Basic Authentication username |
 | `N8N_BASIC_AUTH_PASSWORD` | Yes | Basic Authentication password |
 | `N8N_ENCRYPTION_KEY` | Yes | Encryption key used to protect credentials |
@@ -151,7 +145,7 @@ The following directories should be included in your backup strategy:
 
 Restore the persistent directories before starting the containers.
 
-After restoring the data, start the stack.
+After restoring the data, start the stack using:
 
 ```bash
 docker compose up -d
@@ -197,18 +191,6 @@ The objective is to keep the stack portable, reproducible, and easy to maintain.
 
 ## Troubleshooting
 
-Redis recommends enabling Linux memory overcommit for production systems.
-
-```bash
-sudo sysctl vm.overcommit_memory=1
-```
-
-To make the setting persistent, add the following line to `/etc/sysctl.conf`.
-
-```text
-vm.overcommit_memory = 1
-```
-
 Check container status.
 
 ```bash
@@ -238,17 +220,6 @@ Restart the stack.
 ```bash
 docker compose restart
 ```
-
-## Tested With
-
-This stack has been validated with:
-
-- Ubuntu 24.04 LTS
-- Docker Engine 28
-- Docker Compose v2
-- n8n 2.34.0
-- PostgreSQL 16.10
-- Redis 7.4.5
 
 ## License
 
