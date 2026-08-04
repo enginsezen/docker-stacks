@@ -1,0 +1,19 @@
+# Normalize text files to LF
+* text=auto eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Docker Compose / YAML
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# Environment files
+*.env text eol=lf
+*.env.* text eol=lf
+
+# Documentation
+*.md text eol=lf
+
+# GitHub Actions
+*.yaml text eol=lf
