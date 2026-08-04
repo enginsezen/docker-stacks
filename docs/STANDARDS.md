@@ -208,6 +208,17 @@ POSTGRES_PASSWORD=change-me
 SECRET_KEY=change-me
 ```
 
+## Synchronization
+
+The `.env.example` file and `docker-compose.yml` must always stay synchronized.
+
+- Every variable referenced in `docker-compose.yml` must exist in `.env.example`.
+- `.env.example` must not contain unused variables.
+- Only user-configurable values should be exposed through `.env.example`.
+- Configuration values intentionally fixed by the maintainer should remain in `docker-compose.yml`.
+
+A variable should never be added to `.env.example` unless it is actually used by the stack.
+
 ---
 
 # Secret Generation
