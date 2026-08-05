@@ -1,6 +1,3 @@
-[![Docker Compose](https://img.shields.io/badge/Docker_Compose-v2-blue.svg)]
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)]
-
 # Authentik
 
 Production-ready Docker Compose stack for Authentik using PostgreSQL and Redis.
