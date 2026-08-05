@@ -30,6 +30,7 @@ docker-stacks/
 ├── docs/
 │   └── STANDARDS.md
 ├── stacks/
+│   ├── authentik/
 │   ├── n8n/
 │   ├── nextcloud-aio/
 │   ├── paperless-ngx/
@@ -59,6 +60,7 @@ docs/STANDARDS.md
 | Vaultwarden | Lightweight Bitwarden-compatible password manager | ✅ Production |
 | Shlink | Self-hosted URL shortener with PostgreSQL and official Web Client | ✅ Production |
 | Nextcloud AIO | Official Nextcloud All-in-One deployment with automated container orchestration | ✅ Production |
+| Authentik | Identity and access management platform with PostgreSQL and Redis | ✅ Production |
 
 More production-ready stacks will be added over time.
 
