@@ -141,7 +141,7 @@ The PostgreSQL database contains all Authentik configuration, users, application
 
 The `media` directory stores uploaded assets such as icons, backgrounds, and other filesystem content when local storage is used.
 
-The Redis directory contains cached data and queued tasks. While it is less critical than PostgreSQL, backing it up helps preserve pending background jobs and reduces recovery time. :contentReference[oaicite:0]{index=0}
+The Redis directory contains cached data and queued tasks. While it is less critical than PostgreSQL, backing it up helps preserve pending background jobs and reduces recovery time.
 
 ## Restore
 
@@ -159,7 +159,7 @@ Verify that all containers are healthy.
 docker compose ps
 ```
 
-If restoring from a PostgreSQL dump instead of the bind-mounted data directory, restore the database before allowing Authentik to serve requests. :contentReference[oaicite:1]{index=1}
+If restoring from a PostgreSQL dump instead of the bind-mounted data directory, restore the database before allowing Authentik to serve requests.
 
 ## Update
 
@@ -185,7 +185,7 @@ Verify the deployment.
 docker compose ps
 ```
 
-Authentik recommends reviewing the release notes before every upgrade because newer releases may introduce migration steps or updated deployment recommendations. :contentReference[oaicite:2]{index=2}
+Authentik recommends reviewing the release notes before every upgrade because newer releases may introduce migration steps or updated deployment recommendations.
 
 ## Design Decisions
 
@@ -206,15 +206,15 @@ Key design decisions include:
 - Production defaults remain inside `docker-compose.yml`.
 - Docker socket mounting is intentionally omitted.
 
-### Why is the Docker socket not mounted?
+### Why are the Docker socket and `user: root` omitted?
 
-The official Docker Compose deployment mounts the Docker socket into the worker container to allow Authentik to automatically deploy and manage Docker Outposts.
+The official Authentik Docker Compose deployment mounts the Docker socket into the worker container and runs the worker as `root` to enable automatic deployment and lifecycle management of Docker Outposts.
 
-This repository intentionally omits that mount because Outposts are outside the scope of this stack.
+This repository intentionally omits both the Docker socket mount and the `user: root` directive because Docker-managed Outposts are outside the scope of this stack.
 
-Removing the Docker socket reduces the privileges granted to the Authentik worker and avoids exposing the Docker API unnecessarily.
+Removing the Docker socket prevents the worker from accessing the host Docker API, while omitting `user: root` follows the principle of least privilege by avoiding unnecessary root execution.
 
-If you plan to use Docker-managed Outposts, consult the official documentation before enabling the Docker socket. Authentik also recommends using a Docker Socket Proxy to reduce the security risks associated with exposing the Docker API. :contentReference[oaicite:3]{index=3}
+If you plan to use Docker-managed Outposts, consult the official Authentik documentation before enabling these options. Consider using a Docker Socket Proxy instead of exposing the Docker API directly to reduce the associated security risks.
 
 ### Why are no ports published?
 
