@@ -207,7 +207,7 @@ volumes:
 
 This repository intentionally does **not** enable Docker socket access by default.
 
-Mounting the Docker socket grants the container elevated access to the Docker daemon. Enable this feature only if Docker container monitoring is required and you fully understand the associated security implications. Avoid exposing an instance using Docker socket access directly to the public Internet. :contentReference[oaicite:3]{index=3}
+Mounting the Docker socket grants the container elevated access to the Docker daemon. Enable this feature only if Docker container monitoring is required and you fully understand the associated security implications. Avoid exposing an instance using Docker socket access directly to the public Internet.
 
 ## Troubleshooting
 
