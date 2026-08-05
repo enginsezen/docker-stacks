@@ -256,7 +256,7 @@ docker compose up -d
 
 The Compose configuration must be valid without warnings after creating the `.env` file from `.env.example`.
 
-Every stack must then be validated by deploying it on a clean Ubuntu 24.04 LTS installation using only the provided documentation.
+Every stack must then be validated by deploying it on a clean Ubuntu 26.04 LTS installation using only the provided documentation.
 
 If additional undocumented steps are required, the documentation must be updated before publication.
 
@@ -304,7 +304,7 @@ A stack is ready to publish only if all of the following are true.
 - [ ] Restore documented
 - [ ] Restore tested
 - [ ] Update documented
-- [ ] Successfully deployed on a clean Ubuntu 24.04 LTS system
+- [ ] Successfully deployed on a clean Ubuntu 26.04 LTS system
 
 # Repository Goal
 
